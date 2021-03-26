@@ -7,8 +7,9 @@
 //   - Series: An elliptic series method, as described in Murray & Dermott.
 //   - Contour: A method based on contour integration, described in Philcox et al. (2021).
 //
-// Given an array of mean anomalies, an eccentricity and a desired precision, the code will estimate the eccentricity using each method.
-// The accuracy of each approach is increased until the desired precision is reached, relative to an (overconverged) Danby estimate with 100 steps.
+// Given an array of mean anomalies, an eccentricity and a desired precision, the code will estimate the eccentric anomaly using each method.
+// We generate a grid of mean anomalies from a uniformly spaced grid in eccentric anomaly.
+// The hyperparameter of each approach is increased until the desired precision is reached, relative to the true result.
 // Timing is performed using the `chrono' package.
 
 #include <math.h>
@@ -265,10 +266,12 @@ int main(int argc, char *argv[]) {
   printf("e = %.2f\n",e);
   printf("tolerance = %.2e\n",tol);
 
-  // Define linearly-spaced ell array
-  Float ell_arr[N_ell];
+  // Define ell array from a linearly spaced grid of E
+  Float* E_exact = new Float[N_ell];
+  Float* ell_arr = new Float[N_ell];
   for(int i=0;i<N_ell;i++){
-    ell_arr[i] = 2.0*M_PI*(i+0.5)/N_ell;
+    E_exact[i] = 2.0*M_PI*(i+0.5)/N_ell;
+    ell_arr[i] = E_exact[i]-e*sin(E_exact[i]);
   }
 
   // Create output class to hold methods
@@ -280,14 +283,9 @@ int main(int argc, char *argv[]) {
 
   // Output estimates
   Float* E_newton_raphson = new Float[N_ell];
-  Float* E_exact = new Float[N_ell];
   Float* E_Danby = new Float[N_ell];
   Float* E_series = new Float[N_ell];
   Float* E_contour = new Float[N_ell];
-
-  // Compute `exact' estimates from high-resolution Danby estimate
-  printf("Computed 'exact' estimates using Danby with %d steps.\n",100);
-  approx.compute_danby(100, E_exact);
 
   // Compute Newton-Raphson quadratic estimate
   int N_NR = 0; // Newton-Raphson iterations
