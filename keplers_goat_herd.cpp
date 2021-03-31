@@ -153,14 +153,16 @@ void compute_contour(int N_it, Float *output){
     Float radius = e/2;
 
     // Generate e^{ikx} sampling points and precompute real and imaginary parts
-    Float exp2R[N_points], exp2I[N_points], exp4R[N_points], exp4I[N_points], coshI[N_points], sinhI[N_points], ecosR[N_points], esinR[N_points];
+    Float cf, sf, exp2R[N_points], exp2I[N_points], exp4R[N_points], exp4I[N_points], coshI[N_points], sinhI[N_points], ecosR[N_points], esinR[N_points];
     for(int jj=0;jj<N_points;jj++){
       // NB: j = jj+1
       freq = 2.0*M_PI*(jj+1)/N_fft;
-      exp2R[jj] = cos(freq);
-      exp2I[jj] = sin(freq);
-      exp4R[jj] = cos(2.0*freq);
-      exp4I[jj] = sin(2.0*freq);
+      cf = cos(freq);
+      sf = sin(freq);
+      exp2R[jj] = cf;
+      exp2I[jj] = sf;
+      exp4R[jj] = cf*cf-sf*sf;
+      exp4I[jj] = 2.0*cf*sf;
       coshI[jj] = cosh(radius*exp2I[jj]);
       sinhI[jj] = sinh(radius*exp2I[jj]);
       ecosR[jj] = e*cos(radius*exp2R[jj]);
@@ -258,7 +260,7 @@ int main(int argc, char *argv[]) {
 
   // PARAMETERS
   int N_ell = 1000000; // ell array size
-  Float e = 0.1; // Eccentricity
+  Float e = 0.5; // Eccentricity
   Float tol = 1e-12; // tolerance for error acceptance
 
   // Print parameters
