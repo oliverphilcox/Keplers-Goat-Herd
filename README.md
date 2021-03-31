@@ -1,6 +1,6 @@
 # Kepler's Goat Herd
 
-C++ code for solving Kepler's equation using contour integration, following Philcox et al. (2021, in prep.). This uses a method originally proposed by Ullisch (2020) to solve the "geometric goat problem".
+C++ code for solving Kepler's equation using contour integration, following Philcox et al. (2021, [arXiv](https://arxiv.org/abs/2103.15829)). This uses a method originally proposed by Ullisch (2020) to solve the "geometric goat problem".
 
 The code contains implementations of a variety of solution methods:
 - Newton-Raphson: The quadratic Newton-Raphson root finder.
