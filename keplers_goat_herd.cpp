@@ -51,7 +51,7 @@ class Approximations {
     //
     // Hanno Rein: - Improved initial guess. 
     //             - Combined operations in iteration.
-    //             - __sincos used to speed up sin/cos calculations
+    //             - sincos used to speed up sin/cos calculations
 
     Float this_ell, old_E, sinE, cosE;
 
@@ -65,7 +65,7 @@ class Approximations {
       //else old_E = this_ell + 0.85*e;
 
       // Define initial estimate (fourth order in e)
-      __sincos(this_ell,&sinE,&cosE);
+      sincos(this_ell,&sinE,&cosE);
       old_E = this_ell + e*sinE/sqrt(1.-2.*e*cosE+e*e);
 
       // Perform Newton-Raphson estimate
@@ -76,8 +76,8 @@ class Approximations {
         // to notice that optimization automatically and
         // this does therefore not improve the speed 
         // for most compiler options.
-        // Might need to use sincos() instead of __sincos().
-        __sincos(old_E,&sinE,&cosE);
+        // Might need to use __sincos() instead of sincos().
+        sincos(old_E,&sinE,&cosE);
 
         // Combine update in one step
         Float new_E = (this_ell - e*(old_E*cosE-sinE))/(1.-e*cosE);
@@ -96,7 +96,7 @@ class Approximations {
     //
     // Hanno Rein: - Improved initial guess. 
     //             - Combined operations in iteration.
-    //             - __sincos used to speed up sin/cos calculations
+    //             - sincos used to speed up sin/cos calculations
     // This has quartic convergence.
     // The initial step is defined as E_0 = ell + sgn(sin(ell))*e*k following Danby (1988)
 
@@ -112,7 +112,7 @@ class Approximations {
       for(int j=0;j<N_it;j++) {
 
         // Compute f(E), f'(E), f''(E) and f'''(E), avoiding recomputation of sine and cosine.
-        __sincos(old_E,&esinE,&ecosE);
+        sincos(old_E,&esinE,&ecosE);
         esinE = e*esinE;
         ecosE = e*ecosE;
         f_E = old_E - esinE-this_ell;
