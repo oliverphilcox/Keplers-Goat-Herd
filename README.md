@@ -14,3 +14,4 @@ To compile the code using g++, simply run ```g++ -o kepler keplers_goat_herd.cpp
 
 **Authors**:
 - Oliver Philcox (Princeton, [ohep2@cantab.ac.uk](mailto:ohep2@cantab.ac.uk))
+- Hanno Rein (Toronto, [hanno.rein@utoronto.ca](mailto:hanno.rein@utoronto.ca))
